@@ -1,44 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
+void main()
 {
-	FILE *fptr1, *fptr2;
-	char filename[100], c;
-
-	printf("Enter the filename to open for reading \n");
-	scanf("%s", filename);
-
-	// Open one file for reading
-	fptr1 = fopen(filename, "r");
-	if (fptr1 == NULL)
-	{
-		printf("Cannot open file %s \n", filename);
-		exit(0);
-	}
-
-	printf("Enter the filename to open for writing \n");
-	scanf("%s", filename);
-
-	// Open another file for writing
-	fptr2 = fopen(filename, "w");
-	if (fptr2 == NULL)
-	{
-		printf("Cannot open file %s \n", filename);
-		exit(0);
-	}
-
-	// Read contents from file
-	c = fgetc(fptr1);
-	while (c != EOF)
-	{
-		fputc(c, fptr2);
-		c = fgetc(fptr1);
-	}
-
-	printf("\nContents copied to %s", filename);
-
-	fclose(fptr1);
-	fclose(fptr2);
-	return 0;
+    FILE *fptr;
+    int i, n, empno;
+    float bpay, allow, ded;
+    char name[10];
+    fptr = fopen("data.txt", "w");
+    printf("Enter the number of employees : ");
+    scanf("%d", &n);
+    for(i = 0; i < n; i++)
+    {
+        printf("\nEnter the employee number : ");
+        scanf("%d", &empno);
+        printf("\nEnter the name : ");
+        scanf("%s", name);
+        printf("\nEnter the basic pay, allowances & deductions : ");
+        scanf("%f %f %f", &bpay, &allow, &ded);
+        fprintf(fptr, "%d %s %f %f %f \n", empno,name,bpay,allow,ded);
+    }
+	fclose(fptr);
+	fptr = fopen("data.txt", "r");
+	printf("\nEmp. No.Name\t\t Bpay\t\t Allow\t\t Ded\t\t Npay\n\n");
+	for(i = 0; i < n; i++)
+    {
+    	fscanf(fptr,"%d%s%f%f%f\n", &empno,name,&bpay,&allow,&ded);
+    	printf("%d \t %s \t %.2f \t %.2f \t %.2f \t %.2f \n", empno, name, bpay, allow, ded, bpay + allow - ded);
+    }
+    fclose(fptr);
+    getch();
 }
